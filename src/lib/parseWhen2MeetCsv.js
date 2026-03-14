@@ -56,6 +56,28 @@ function toSlotKeyFromParts(parts) {
   return `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
 }
 
+function easternToSeoulParts(parts) {
+  const { year, month, date, hour, minute } = parts;
+  const isEDT = (m, d) => {
+    if (m > 3 && m < 11) return true;
+    if (m < 3 || m > 11) return false;
+    if (m === 3) return d >= 8; 
+    if (m === 11) return d < 2; 
+    return false;
+  };
+  const nyOffset = isEDT(month, date) ? 4 : 5; // EDT UTC-4, EST UTC-5
+  const utcMs = Date.UTC(year, month - 1, date, hour + nyOffset, minute);
+  const seoulMs = utcMs + 9 * 60 * 60 * 1000; // KST = UTC+9
+  const d = new Date(seoulMs);
+  return {
+    year: d.getUTCFullYear(),
+    month: d.getUTCMonth() + 1,
+    date: d.getUTCDate(),
+    hour: d.getUTCHours(),
+    minute: d.getUTCMinutes(),
+  };
+}
+
 function getWeekStart(d) {
   const x = new Date(d);
   x.setDate(x.getDate() - x.getDay());
@@ -141,6 +163,8 @@ export function parseCsvText(csvText, nicknameMap = DEFAULT_NICKNAME_MAP, option
   }
 
   const headerRow = rows[0];
+  const timezoneCell = (headerRow[0] || '').toString();
+  const isNewYork = /America\/New_York/i.test(timezoneCell);
   const names = [];
   for (let c = 1; c < headerRow.length; c++) {
     names.push(trimQuotes(headerRow[c]).trim());
@@ -151,7 +175,7 @@ export function parseCsvText(csvText, nicknameMap = DEFAULT_NICKNAME_MAP, option
     const timeStr = (rows[r][0] || '').toString().trim();
     const dateParts = parseDateTimeParts(timeStr);
     const key = dateParts
-      ? toSlotKeyFromParts(dateParts)
+      ? toSlotKeyFromParts(isNewYork ? easternToSeoulParts(dateParts) : dateParts)
       : (() => {
           const parts = parseTimeHeaderParts(timeStr);
           return parts ? toSlotKey(weekStart, parts.dayIndex, parts.hour, parts.minute) : null;
