@@ -1,7 +1,4 @@
-/**
- * 밴드 멤버 역할 정의 (표시 이름 기준)
- * 역할별 이모지와 displayName → role 역매핑용
- */
+// 밴드 역할·이모지·표시이름 매핑
 
 export const ROLES_BY_MEMBER = {
   vocal: ['희은', '다훈'],
@@ -31,13 +28,8 @@ const displayNameToRole = (() => {
   return map
 })()
 
-/**
- * @param {string} displayName
- * @returns {string|null} role key (vocal, guitar1, ...) or null if not in band
- */
 export function getRoleByDisplayName(displayName) {
   return displayNameToRole.get(displayName) ?? null
 }
 
-/** 역할 표시 순서 */
 export const ROLE_ORDER = ['vocal', 'guitar1', 'guitar2', 'bass', 'piano', 'drums']

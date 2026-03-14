@@ -1,9 +1,4 @@
-/**
- * when2meet CSV 파서
- * 형식 A: 1행 = 시간 슬롯 헤더, 2행~ = 이름, Yes/No
- * 형식 B: 1행 = Time,이름1,이름2... , 2행~ = 시간, 0/1
- * 파싱 후 slotKeys + people(displayName, slots) 통일 구조로 반환
- */
+// when2meet CSV 파서 → slotKeys + people
 
 const DEFAULT_NICKNAME_MAP = {
   먹기의신: '희은',
@@ -27,7 +22,6 @@ function toDisplayName(rawName, nicknameMap = DEFAULT_NICKNAME_MAP) {
   return nicknameMap[key] ?? key;
 }
 
-/** Parse "Monday 09:00:00" to { dayIndex: 0-6 (Sun=0), hour, minute }. */
 function parseTimeHeaderParts(timeStr) {
   const s = String(timeStr).trim();
   const match = s.match(/(\w+)\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?/i);
@@ -44,10 +38,6 @@ function parseTimeHeaderParts(timeStr) {
   return { dayIndex, hour: h, minute: m };
 }
 
-/**
- * Parse "MM/DD/YYYY HH:mm:ss" (Tampermonkey When2Meet CSV Exporter format).
- * Returns { year, month, date, hour, minute } or null.
- */
 function parseDateTimeParts(timeStr) {
   const s = String(timeStr).trim();
   const match = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?/);
@@ -61,13 +51,11 @@ function parseDateTimeParts(timeStr) {
   return { year, month, date, hour, minute };
 }
 
-/** Build slotKey YYYY-MM-DDTHH:mm from date parts (no weekStart). */
 function toSlotKeyFromParts(parts) {
   const { year, month, date, hour, minute } = parts;
   return `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
 }
 
-/** Week start = Sunday 00:00. */
 function getWeekStart(d) {
   const x = new Date(d);
   x.setDate(x.getDate() - x.getDay());
@@ -75,7 +63,6 @@ function getWeekStart(d) {
   return x;
 }
 
-/** Build slotKey YYYY-MM-DDTHH:mm from weekStart + dayIndex (0-6) + hour, minute. */
 function toSlotKey(weekStart, dayIndex, hour, minute) {
   const d = new Date(weekStart);
   d.setDate(d.getDate() + dayIndex);
@@ -88,19 +75,12 @@ function detectFormat(rows) {
   if (first.length < 2) return null;
   const firstCell = (first[0] || '').toString().trim().toLowerCase();
   const secondCell = (first[1] || '').toString().trim();
-  // Format B: first column is "Time" or similar
   if (firstCell === 'time' || firstCell.includes('time')) return 'B';
-  // Format A: first row has empty first cell and time-like headers (e.g. "Monday 09:00:00")
   if (!firstCell && secondCell && /[A-Za-z]+\s+\d{1,2}:\d{2}/.test(secondCell)) return 'A';
-  // Format A: first column might be empty string
   if (first[0] === '' || firstCell === '') return 'A';
   return 'B';
 }
 
-/**
- * Parse one CSV text.
- * options: { nicknameMap, weekStart?: Date } — weekStart = that week's Sunday (for format A/B). If omitted, uses current week.
- */
 export function parseCsvText(csvText, nicknameMap = DEFAULT_NICKNAME_MAP, options = {}) {
   const weekStart = options.weekStart ? getWeekStart(options.weekStart) : getWeekStart(new Date());
   const lines = csvText.split(/\r?\n/).filter((l) => l.trim());
@@ -160,7 +140,6 @@ export function parseCsvText(csvText, nicknameMap = DEFAULT_NICKNAME_MAP, option
     return { slotKeys, people };
   }
 
-  // Format B: row 0 = time (tz), name1, name2, ... (e.g. Tampermonkey When2Meet CSV Exporter)
   const headerRow = rows[0];
   const names = [];
   for (let c = 1; c < headerRow.length; c++) {
@@ -192,14 +171,9 @@ export function parseCsvText(csvText, nicknameMap = DEFAULT_NICKNAME_MAP, option
   return { slotKeys, people };
 }
 
-/**
- * Merge multiple parse results (from multiple CSV files) into one.
- * - Union of slotKeys (sorted)
- * - Merge people by displayName (union of slots)
- */
 export function mergeParsedResults(results) {
   const slotKeySet = new Set();
-  const peopleByDisplay = new Map(); // displayName -> { displayName, slots: Set }
+  const peopleByDisplay = new Map();
   for (const { slotKeys, people } of results) {
     slotKeys.forEach((k) => slotKeySet.add(k));
     people.forEach((p) => {
