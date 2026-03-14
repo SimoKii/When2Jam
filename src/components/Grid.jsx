@@ -123,7 +123,7 @@ export default function Grid({ data, settings, onSettingsChange, roomSchedule = 
           type="button"
           disabled={weekIndex <= 0}
           onClick={() => setWeekIndex((i) => i - 1)}
-          className="min-h-[44px] rounded-xl border border-[var(--color-primary-border)] bg-[#FAFAFA] px-4 py-2.5 text-sm font-medium text-black disabled:opacity-40 active:bg-[var(--color-primary-light)] transition-colors touch-manipulation"
+          className="min-h-[44px] rounded-xl border border-[var(--color-primary-border)] bg-[var(--color-bg)] px-4 py-2.5 text-sm font-medium text-black disabled:opacity-40 active:bg-[var(--color-primary-light)] transition-colors touch-manipulation"
         >
           ← 이전 주
         </button>
@@ -134,7 +134,7 @@ export default function Grid({ data, settings, onSettingsChange, roomSchedule = 
           type="button"
           disabled={weekIndex >= weeks.length - 1}
           onClick={() => setWeekIndex((i) => i + 1)}
-          className="min-h-[44px] rounded-xl border border-[var(--color-primary-border)] bg-[#FAFAFA] px-4 py-2.5 text-sm font-medium text-black disabled:opacity-40 active:bg-[var(--color-primary-light)] transition-colors touch-manipulation"
+          className="min-h-[44px] rounded-xl border border-[var(--color-primary-border)] bg-[var(--color-bg)] px-4 py-2.5 text-sm font-medium text-black disabled:opacity-40 active:bg-[var(--color-primary-light)] transition-colors touch-manipulation"
         >
           다음 주 →
         </button>
@@ -142,7 +142,7 @@ export default function Grid({ data, settings, onSettingsChange, roomSchedule = 
 
       <Legend />
 
-      <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center gap-3 sm:gap-4 rounded-xl border border-[var(--color-primary-border)] bg-[#FAFAFA] p-3 text-sm">
+      <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center gap-3 sm:gap-4 rounded-xl border border-[var(--color-primary-border)] bg-[var(--color-bg)] p-3 text-sm">
           <label className="flex items-center gap-2 text-[var(--color-text)]">
             <span>최소 인원</span>
             <input
@@ -191,8 +191,8 @@ export default function Grid({ data, settings, onSettingsChange, roomSchedule = 
           </label>
         </div>
 
-      <div className="overflow-x-auto rounded-xl sm:rounded-2xl border border-[#E0DDD9] bg-[#FAFAFA] shadow-sm overflow-hidden -mx-1 sm:mx-0">
-        <table className="w-full border-collapse text-xs sm:text-sm table-fixed [border-color:#E0DDD9]" style={{ minWidth: 420 }}>
+      <div className="overflow-x-auto rounded-xl sm:rounded-2xl border border-[var(--color-primary-border)] bg-[var(--color-bg)] shadow-sm overflow-hidden -mx-1 sm:mx-0">
+        <table className="w-full border-collapse text-xs sm:text-sm table-fixed [border-color:var(--color-primary-border)]" style={{ minWidth: 420 }}>
           <colgroup>
             <col style={{ width: '4.5rem' }} />
             {dayKeys.map((dk) => (
@@ -201,13 +201,13 @@ export default function Grid({ data, settings, onSettingsChange, roomSchedule = 
           </colgroup>
           <thead>
             <tr>
-              <th className="sticky left-0 z-10 border-b border-r border-[#E0DDD9] bg-white/90 px-3 sm:px-4 py-2 sm:py-3 text-center align-middle font-semibold text-[var(--color-text)] text-xs sm:text-sm backdrop-blur-sm">
+              <th className="sticky left-0 z-10 border-b border-r border-[var(--color-primary-border)] bg-white/90 px-3 sm:px-4 py-2 sm:py-3 text-center align-middle font-semibold text-[var(--color-text)] text-xs sm:text-sm backdrop-blur-sm">
                 시간
               </th>
               {dayKeys.map((dk) => (
                 <th
                   key={dk}
-                  className="border-b border-l border-[#E0DDD9] bg-white/80 px-2.5 sm:px-4 py-2 sm:py-3 text-center font-semibold text-[var(--color-text)] text-[10px] sm:text-sm"
+                  className="border-b border-l border-[var(--color-primary-border)] bg-white/80 px-2.5 sm:px-4 py-2 sm:py-3 text-center font-semibold text-[var(--color-text)] text-[10px] sm:text-sm"
                 >
                   <span className="hidden sm:inline">{formatDateLabel(dk)}</span>
                   <span className="sm:hidden">{formatDateLabelShort(dk)}</span>
@@ -218,7 +218,7 @@ export default function Grid({ data, settings, onSettingsChange, roomSchedule = 
           <tbody>
             {gridCells.map((row) => (
               <tr key={row.time}>
-                <td className="sticky left-0 z-10 border-b border-r border-[#E0DDD9] bg-white/70 px-3 sm:px-4 py-2.5 sm:py-3 text-[var(--color-text-muted)] whitespace-nowrap font-medium text-xs sm:text-sm backdrop-blur-sm min-h-[3rem] sm:min-h-[3.25rem]">
+                <td className="sticky left-0 z-10 border-b border-r border-[var(--color-primary-border)] bg-white/70 px-3 sm:px-4 py-2.5 sm:py-3 text-[var(--color-text-muted)] whitespace-nowrap font-medium text-xs sm:text-sm backdrop-blur-sm min-h-[3rem] sm:min-h-[3.25rem]">
                   {row.time}
                 </td>
                 {row.cells.map((cell) => (
@@ -227,12 +227,12 @@ export default function Grid({ data, settings, onSettingsChange, roomSchedule = 
                     onClick={() => setSelectedSlot(cell.slotKey)}
                     className={`border-b border-l px-2.5 sm:px-4 py-2.5 sm:py-3 cursor-pointer min-h-[3rem] sm:min-h-[3.25rem] align-top transition-colors touch-manipulation ${
                       recommendOnly && !cell.meaningful
-                        ? 'border-[#E0DDD9] bg-white/40 opacity-50'
+                        ? 'border-[var(--color-primary-border)] bg-white/40 opacity-50'
                         : cell.meaningful
-                        ? 'border-[#681993]/25 bg-[var(--color-primary-light)] hover:bg-[var(--color-primary)]/20'
+                        ? 'border-[var(--color-primary-border-tint)] bg-[var(--color-primary-light)] hover:bg-[var(--color-primary)]/20'
                         : cell.count > 0
-                        ? 'border-[#E0DDD9] bg-white/70 hover:bg-[#E0DDD9]/60'
-                        : 'border-[#E0DDD9] bg-white/50 hover:bg-[#E0DDD9]/50'
+                        ? 'border-[var(--color-primary-border)] bg-white/70 hover:bg-[var(--color-primary-border)]/60'
+                        : 'border-[var(--color-primary-border)] bg-white/50 hover:bg-[var(--color-primary-border)]/50'
                     }`}
                   >
                     <div className="font-semibold text-[var(--color-text)] text-xs sm:text-sm">

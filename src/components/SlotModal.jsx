@@ -62,17 +62,17 @@ export default function SlotModal({ slotKey, names = [], conflictingTeams = [], 
       aria-labelledby="slot-modal-title"
     >
       <div
-        className="w-full max-w-sm rounded-2xl bg-[#FAFAFA] shadow-xl border border-[#E0DDD9] overflow-hidden max-h-[85vh] overflow-y-auto pb-[env(safe-area-inset-bottom)]"
+        className="w-full max-w-sm rounded-2xl bg-[var(--color-bg)] shadow-xl border border-[var(--color-primary-border)] overflow-hidden max-h-[85vh] overflow-y-auto pb-[env(safe-area-inset-bottom)]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="px-4 sm:px-5 pt-4 sm:pt-5 pb-1 flex items-center justify-between sticky top-0 bg-[#FAFAFA]">
-          <h2 id="slot-modal-title" className="text-lg font-semibold text-[#2D2D2D]">
+        <div className="px-4 sm:px-5 pt-4 sm:pt-5 pb-1 flex items-center justify-between sticky top-0 bg-[var(--color-bg)]">
+          <h2 id="slot-modal-title" className="text-lg font-semibold text-[var(--color-text)]">
             합주 가능 인원
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full text-[#681993] hover:bg-[#681993]/10 active:bg-[#681993]/20 transition-colors touch-manipulation"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 active:bg-[var(--color-primary)]/20 transition-colors touch-manipulation"
             aria-label="닫기"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,12 +80,12 @@ export default function SlotModal({ slotKey, names = [], conflictingTeams = [], 
             </svg>
           </button>
         </div>
-        <p className="px-4 sm:px-5 pb-3 sm:pb-4 text-sm text-[#681993] font-medium">
+        <p className="px-4 sm:px-5 pb-3 sm:pb-4 text-sm text-[var(--color-primary)] font-medium">
           {datePart} {timePart}
         </p>
         <div className="px-4 sm:px-5 pb-6 pt-0">
           {names.length === 0 ? (
-            <p className="text-[#6B7280]">가능한 사람 없음</p>
+            <p className="text-[var(--color-text-muted)]">가능한 사람 없음</p>
           ) : (
             <ul className="space-y-3">
               {linesByEmoji.map(({ emoji, names: roleNames }, i) => (
@@ -96,7 +96,7 @@ export default function SlotModal({ slotKey, names = [], conflictingTeams = [], 
               ))}
               {others.length > 0 && (
                 <li className="flex items-baseline gap-2">
-                  <span className="text-[#6B7280] text-sm">참가자</span>
+                  <span className="text-[var(--color-text-muted)] text-sm">참가자</span>
                   <span className="font-medium text-black">{others.join(', ')}</span>
                 </li>
               )}
@@ -104,7 +104,7 @@ export default function SlotModal({ slotKey, names = [], conflictingTeams = [], 
           )}
           {conflictingTeams?.length > 0 && (
             <>
-              <hr className="border-[#E0DDD9] my-4" />
+              <hr className="border-[var(--color-primary-border)] my-4" />
               <p className="text-sm font-medium text-[var(--color-text)] mb-1.5">시간 조율 필요</p>
               <p className="text-sm text-[var(--color-text-muted)]">{conflictingTeams.join(', ')}</p>
             </>

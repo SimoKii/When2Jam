@@ -90,7 +90,7 @@ export default function App() {
 
   if (view === 'grid' && mergedData) {
     return (
-      <div className="min-h-screen bg-[#FAFAFA] p-3 sm:p-4 md:p-6">
+      <div className="min-h-screen bg-[var(--color-bg)] p-3 sm:p-4 md:p-6">
         <header className="mb-3 sm:mb-4">
           <h1 className="text-xl sm:text-2xl font-bold text-black tracking-tight">밴드 합주 일정</h1>
         </header>
@@ -106,7 +106,7 @@ export default function App() {
 
   if (view === 'error') {
     return (
-      <div className="min-h-screen bg-[#FAFAFA] p-4 flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--color-bg)] p-4 flex items-center justify-center">
         <p className="text-[var(--color-text-muted)]">
           일정 CSV를 불러올 수 없습니다. <code className="bg-[var(--color-primary-light)] text-[var(--color-primary)] px-2 py-0.5 rounded-lg">public/</code>에 when2meet1.csv ~ 4.csv를 넣어 주세요.
         </p>
@@ -115,7 +115,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] p-4 flex items-center justify-center">
+    <div className="min-h-screen bg-[var(--color-bg)] p-4 flex items-center justify-center">
       <p className="text-[var(--color-primary)] font-medium">일정을 불러오는 중…</p>
     </div>
   )
