@@ -235,7 +235,12 @@ export default function Grid({ data, settings, onSettingsChange, roomSchedule = 
                         : 'border-[#E0DDD9] bg-white/50 hover:bg-[#E0DDD9]/50'
                     }`}
                   >
-                    <div className="font-semibold text-[var(--color-text)] text-xs sm:text-sm">{cell.count}명</div>
+                    <div className="font-semibold text-[var(--color-text)] text-xs sm:text-sm">
+                      {cell.count}명
+                      {cell.meaningful && getConflictingTeams(cell.slotKey, roomSchedule).length > 0 && (
+                        <span className="ml-0.5" aria-label="시간 조율 필요">🚨</span>
+                      )}
+                    </div>
                     <div className="text-[10px] sm:text-xs text-[var(--color-text-muted)] truncate" title={cell.names.join(', ')}>
                       {cell.names.join(', ')}
                     </div>
