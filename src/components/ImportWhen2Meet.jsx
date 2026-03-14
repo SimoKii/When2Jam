@@ -56,7 +56,7 @@ export default function ImportWhen2Meet({ onImport }) {
         when2meet 페이지에서 CSV를 추출한 뒤 아래에서 업로드하세요. 여러 주(파일)를 한 번에 선택하면 자동으로 합쳐집니다.
       </p>
       <label className="mb-4 block text-sm text-slate-700">
-        <span className="mb-1 block">첫 번째 CSV가 해당하는 주의 일요일 (예: 합주좀하자1 → 3/15)</span>
+        <span className="mb-1 block">첫 번째 CSV가 해당하는 주의 일요일 (예: when2meet1 → 3/15)</span>
         <input
           type="date"
           value={firstWeekSunday}

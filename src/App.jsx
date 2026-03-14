@@ -2,8 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import Grid from './components/Grid'
 import { parseCsvText, mergeParsedResults } from './lib/parseWhen2MeetCsv'
 import { getShareDataFromHash, decodeShareData } from './lib/shareLink'
-
-const CSV_URLS = ['/합주좀하자1.csv', '/합주좀하자2.csv', '/합주좀하자3.csv', '/합주좀하자4.csv']
+const CSV_URLS = ['/when2meet1.csv', '/when2meet2.csv', '/when2meet3.csv', '/when2meet4.csv']
 const STORAGE_KEY = 'band-schedule-data'
 const SETTINGS_KEY = 'band-schedule-settings'
 
@@ -37,8 +36,6 @@ export default function App() {
   const [view, setView] = useState('loading')
   const [mergedData, setMergedData] = useState(null)
   const [settings, setSettings] = useState(defaultSettings)
-
-  // 진입: 프로젝트 CSV 4개 로드 → 파싱·병합 → 그리드만 표시 (별도 입력 없음)
   useEffect(() => {
     const encoded = getShareDataFromHash()
     if (encoded) {
@@ -97,7 +94,7 @@ export default function App() {
     return (
       <div className="min-h-screen bg-[#FAFAFA] p-4 flex items-center justify-center">
         <p className="text-[var(--color-text-muted)]">
-          일정 CSV를 불러올 수 없습니다. <code className="bg-[var(--color-primary-light)] text-[var(--color-primary)] px-2 py-0.5 rounded-lg">public/</code>에 합주좀하자1.csv ~ 4.csv를 넣어 주세요.
+          일정 CSV를 불러올 수 없습니다. <code className="bg-[var(--color-primary-light)] text-[var(--color-primary)] px-2 py-0.5 rounded-lg">public/</code>에 when2meet1.csv ~ 4.csv를 넣어 주세요.
         </p>
       </div>
     )

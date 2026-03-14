@@ -1,9 +1,5 @@
 #!/usr/bin/env node
-/**
- * 4개 When2meet CSV를 읽어 병합한 뒤 public/schedule.json 으로 저장합니다.
- * 사용법: node scripts/merge-csv-to-schedule.mjs [파일1.csv 파일2.csv 파일3.csv 파일4.csv]
- * 인자 없으면 기본 경로(Downloads) 사용.
- */
+// When2meet CSV 4개 병합 → public/schedule.json (인자 없으면 Downloads 기본)
 
 import { readFileSync, writeFileSync } from 'fs'
 import { fileURLToPath } from 'url'
@@ -14,10 +10,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const projectRoot = join(__dirname, '..')
 
 const defaultPaths = [
-  join(process.env.HOME || process.env.USERPROFILE, 'Downloads', '합주좀하자1.csv'),
-  join(process.env.HOME || process.env.USERPROFILE, 'Downloads', '합주좀하자2.csv'),
-  join(process.env.HOME || process.env.USERPROFILE, 'Downloads', '합주좀하자3.csv'),
-  join(process.env.HOME || process.env.USERPROFILE, 'Downloads', '합주좀하자4.csv'),
+  join(process.env.HOME || process.env.USERPROFILE, 'Downloads', 'when2meet1.csv'),
+  join(process.env.HOME || process.env.USERPROFILE, 'Downloads', 'when2meet2.csv'),
+  join(process.env.HOME || process.env.USERPROFILE, 'Downloads', 'when2meet3.csv'),
+  join(process.env.HOME || process.env.USERPROFILE, 'Downloads', 'when2meet4.csv'),
 ]
 
 const csvPaths = process.argv.slice(2).length ? process.argv.slice(2) : defaultPaths
