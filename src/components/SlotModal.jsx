@@ -47,24 +47,24 @@ export default function SlotModal({ slotKey, names = [], onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/40 backdrop-blur-sm"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby="slot-modal-title"
     >
       <div
-        className="w-full max-w-sm rounded-2xl bg-[#FAFAFA] shadow-xl border border-[#E0DDD9] overflow-hidden"
+        className="w-full max-w-sm rounded-t-2xl sm:rounded-2xl bg-[#FAFAFA] shadow-xl border border-[#E0DDD9] overflow-hidden max-h-[85vh] overflow-y-auto pb-[env(safe-area-inset-bottom)]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="px-5 pt-5 pb-1 flex items-center justify-between">
+        <div className="px-4 sm:px-5 pt-4 sm:pt-5 pb-1 flex items-center justify-between sticky top-0 bg-[#FAFAFA]">
           <h2 id="slot-modal-title" className="text-lg font-semibold text-[#2D2D2D]">
             합주 가능 인원
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-full text-[#681993] hover:bg-[#681993]/10 transition-colors"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full text-[#681993] hover:bg-[#681993]/10 active:bg-[#681993]/20 transition-colors touch-manipulation"
             aria-label="닫기"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,10 +72,10 @@ export default function SlotModal({ slotKey, names = [], onClose }) {
             </svg>
           </button>
         </div>
-        <p className="px-5 pb-4 text-sm text-[#681993] font-medium">
+        <p className="px-4 sm:px-5 pb-3 sm:pb-4 text-sm text-[#681993] font-medium">
           {datePart} {timePart}
         </p>
-        <div className="px-5 pb-6 pt-0">
+        <div className="px-4 sm:px-5 pb-6 pt-0">
           {names.length === 0 ? (
             <p className="text-[#6B7280]">가능한 사람 없음</p>
           ) : (
