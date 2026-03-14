@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import SlotModal from './SlotModal'
 import Legend from './Legend'
+import { getConflictingTeams } from '../lib/parseRoomSchedule'
 
 function parseSlotKey(key) {
   const m = key.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/)
@@ -43,7 +44,7 @@ function getTimeSlots(slotKeys) {
   return Array.from(set).sort()
 }
 
-export default function Grid({ data, settings, onSettingsChange }) {
+export default function Grid({ data, settings, onSettingsChange, roomSchedule = [] }) {
   const { slotKeys, people } = data
   const { minPeople, totalPeople, requiredMember } = settings
   const weeks = useMemo(() => getWeeks(slotKeys), [slotKeys])
@@ -250,6 +251,7 @@ export default function Grid({ data, settings, onSettingsChange }) {
         <SlotModal
           slotKey={selectedSlot}
           names={selectedCell.names}
+          conflictingTeams={getConflictingTeams(selectedSlot, roomSchedule)}
           onClose={() => setSelectedSlot(null)}
         />
       )}

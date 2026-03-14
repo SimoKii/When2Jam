@@ -30,7 +30,6 @@ function selectedByRole(names) {
     emoji: ROLE_EMOJI[role],
     names: byRole.get(role),
   }))
-  // 같은 이모지 역할을 한 줄로 묶음 (예: 🎸: 재영, 기호)
   const linesByEmoji = roleLines.reduce((acc, { emoji, names: roleNames }) => {
     if (acc.length > 0 && acc[acc.length - 1].emoji === emoji) {
       acc[acc.length - 1].names.push(...roleNames)
@@ -42,7 +41,7 @@ function selectedByRole(names) {
   return { linesByEmoji, others }
 }
 
-export default function SlotModal({ slotKey, names = [], onClose }) {
+export default function SlotModal({ slotKey, names = [], conflictingTeams = [], onClose }) {
   const { linesByEmoji, others } = selectedByRole(names)
   const { datePart, timePart } = formatSlotLabel(slotKey)
 
@@ -102,6 +101,13 @@ export default function SlotModal({ slotKey, names = [], onClose }) {
                 </li>
               )}
             </ul>
+          )}
+          {conflictingTeams?.length > 0 && (
+            <>
+              <hr className="border-[#E0DDD9] my-4" />
+              <p className="text-sm font-medium text-[var(--color-text)] mb-1.5">시간 조율 필요</p>
+              <p className="text-sm text-[var(--color-text-muted)]">{conflictingTeams.join(', ')}</p>
+            </>
           )}
         </div>
       </div>

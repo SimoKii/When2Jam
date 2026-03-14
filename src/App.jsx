@@ -2,6 +2,8 @@ import { useState, useCallback, useEffect } from 'react'
 import Grid from './components/Grid'
 import { parseCsvText, mergeParsedResults } from './lib/parseWhen2MeetCsv'
 import { getShareDataFromHash, decodeShareData } from './lib/shareLink'
+import { parseRoomScheduleCsv } from './lib/parseRoomSchedule'
+
 const CSV_URLS = ['/when2meet1.csv', '/when2meet2.csv', '/when2meet3.csv', '/when2meet4.csv']
 const STORAGE_KEY = 'band-schedule-data'
 const SETTINGS_KEY = 'band-schedule-settings'
@@ -36,6 +38,8 @@ export default function App() {
   const [view, setView] = useState('loading')
   const [mergedData, setMergedData] = useState(null)
   const [settings, setSettings] = useState(defaultSettings)
+  const [roomSchedule, setRoomSchedule] = useState([])
+
   useEffect(() => {
     const encoded = getShareDataFromHash()
     if (encoded) {
@@ -67,6 +71,15 @@ export default function App() {
       .catch(() => setView('error'))
   }, [])
 
+  useEffect(() => {
+    fetch('/room-schedule-march.csv')
+      .then((r) => (r.ok ? r.text() : ''))
+      .then((text) => {
+        if (text) setRoomSchedule(parseRoomScheduleCsv(text, 2026))
+      })
+      .catch(() => {})
+  }, [])
+
   const updateSettings = useCallback((next) => {
     setSettings((prev) => {
       const s = { ...prev, ...next }
@@ -85,6 +98,7 @@ export default function App() {
           data={mergedData}
           settings={settings}
           onSettingsChange={updateSettings}
+          roomSchedule={roomSchedule}
         />
       </div>
     )
