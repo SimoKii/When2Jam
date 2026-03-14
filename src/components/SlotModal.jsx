@@ -72,7 +72,7 @@ export default function SlotModal({ slotKey, names = [], conflictingTeams = [], 
           <button
             type="button"
             onClick={onClose}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 active:bg-[var(--color-primary)]/20 transition-colors touch-manipulation"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full text-black hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 active:bg-[var(--color-primary)]/20 transition-colors touch-manipulation"
             aria-label="닫기"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
