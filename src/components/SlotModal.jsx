@@ -30,11 +30,20 @@ function selectedByRole(names) {
     emoji: ROLE_EMOJI[role],
     names: byRole.get(role),
   }))
-  return { roleLines, others }
+  // 같은 이모지 역할을 한 줄로 묶음 (예: 🎸: 재영, 기호)
+  const linesByEmoji = roleLines.reduce((acc, { emoji, names: roleNames }) => {
+    if (acc.length > 0 && acc[acc.length - 1].emoji === emoji) {
+      acc[acc.length - 1].names.push(...roleNames)
+    } else {
+      acc.push({ emoji, names: [...roleNames] })
+    }
+    return acc
+  }, [])
+  return { linesByEmoji, others }
 }
 
 export default function SlotModal({ slotKey, names = [], onClose }) {
-  const { roleLines, others } = selectedByRole(names)
+  const { linesByEmoji, others } = selectedByRole(names)
   const { datePart, timePart } = formatSlotLabel(slotKey)
 
   useEffect(() => {
@@ -80,9 +89,9 @@ export default function SlotModal({ slotKey, names = [], onClose }) {
             <p className="text-[#6B7280]">가능한 사람 없음</p>
           ) : (
             <ul className="space-y-3">
-              {roleLines.map(({ role, emoji, names: roleNames }) => (
-                <li key={role} className="flex items-baseline gap-2">
-                  <span className="text-xl" aria-hidden>{emoji}</span>
+              {linesByEmoji.map(({ emoji, names: roleNames }, i) => (
+                <li key={`${emoji}-${i}`} className="flex items-baseline gap-2">
+                  <span className="text-xl" aria-hidden>{emoji}:</span>
                   <span className="font-medium text-black">{roleNames.join(', ')}</span>
                 </li>
               ))}
