@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
 import Grid from './components/Grid'
-import Legend from './components/Legend'
 import { parseCsvText, mergeParsedResults } from './lib/parseWhen2MeetCsv'
 import { getShareDataFromHash, decodeShareData } from './lib/shareLink'
 
@@ -81,16 +80,15 @@ export default function App() {
 
   if (view === 'grid' && mergedData) {
     return (
-      <div className="min-h-screen bg-[#FAFAFA] p-4 md:p-6">
-        <header className="mb-6">
-          <h1 className="text-2xl font-bold text-black tracking-tight">밴드 합주 일정</h1>
+      <div className="min-h-screen bg-[#FAFAFA] p-3 sm:p-4 md:p-6">
+        <header className="mb-3 sm:mb-4">
+          <h1 className="text-xl sm:text-2xl font-bold text-black tracking-tight">밴드 합주 일정</h1>
         </header>
         <Grid
           data={mergedData}
           settings={settings}
           onSettingsChange={updateSettings}
         />
-        <Legend />
       </div>
     )
   }

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import SlotModal from './SlotModal'
+import Legend from './Legend'
 
 function parseSlotKey(key) {
   const m = key.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/)
@@ -105,36 +106,42 @@ export default function Grid({ data, settings, onSettingsChange }) {
     return `${m}/${d} ${weekdays[d2.getDay()]}`
   }
 
+  const formatDateLabelShort = (dateKey) => {
+    const [, m, d] = dateKey.split('-').map(Number)
+    return `${m}/${d}`
+  }
+
   if (!weekKey) {
     return <p className="text-slate-500">표시할 데이터가 없습니다.</p>
   }
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-wrap items-center gap-4">
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            disabled={weekIndex <= 0}
-            onClick={() => setWeekIndex((i) => i - 1)}
-            className="rounded-xl border border-[var(--color-primary-border)] bg-[#FAFAFA] px-4 py-2 text-sm font-medium text-black disabled:opacity-40 hover:bg-[var(--color-primary-light)] transition-colors"
-          >
-            ← 이전 주
-          </button>
-          <span className="text-sm text-black font-medium">
-            {formatDateLabel(dayKeys[0])} ~ {formatDateLabel(dayKeys[dayKeys.length - 1])}
-          </span>
-          <button
-            type="button"
-            disabled={weekIndex >= weeks.length - 1}
-            onClick={() => setWeekIndex((i) => i + 1)}
-            className="rounded-xl border border-[var(--color-primary-border)] bg-[#FAFAFA] px-4 py-2 text-sm font-medium text-black disabled:opacity-40 hover:bg-[var(--color-primary-light)] transition-colors"
-          >
-            다음 주 →
-          </button>
-        </div>
+    <div className="space-y-4 sm:space-y-5">
+      <div className="flex items-center justify-between gap-2 sm:justify-start">
+        <button
+          type="button"
+          disabled={weekIndex <= 0}
+          onClick={() => setWeekIndex((i) => i - 1)}
+          className="min-h-[44px] rounded-xl border border-[var(--color-primary-border)] bg-[#FAFAFA] px-4 py-2.5 text-sm font-medium text-black disabled:opacity-40 active:bg-[var(--color-primary-light)] transition-colors touch-manipulation"
+        >
+          ← 이전 주
+        </button>
+        <span className="text-xs sm:text-sm text-black font-medium text-center flex-1 min-w-0 truncate px-1">
+          {formatDateLabel(dayKeys[0])} ~ {formatDateLabel(dayKeys[dayKeys.length - 1])}
+        </span>
+        <button
+          type="button"
+          disabled={weekIndex >= weeks.length - 1}
+          onClick={() => setWeekIndex((i) => i + 1)}
+          className="min-h-[44px] rounded-xl border border-[var(--color-primary-border)] bg-[#FAFAFA] px-4 py-2.5 text-sm font-medium text-black disabled:opacity-40 active:bg-[var(--color-primary-light)] transition-colors touch-manipulation"
+        >
+          다음 주 →
+        </button>
+      </div>
 
-        <div className="flex flex-wrap items-center gap-4 rounded-xl border border-[var(--color-primary-border)] bg-[#FAFAFA] p-3 text-sm">
+      <Legend />
+
+      <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center gap-3 sm:gap-4 rounded-xl border border-[var(--color-primary-border)] bg-[#FAFAFA] p-3 text-sm">
           <label className="flex items-center gap-2 text-[var(--color-text)]">
             <span>최소 인원</span>
             <input
@@ -172,37 +179,37 @@ export default function Grid({ data, settings, onSettingsChange }) {
               ))}
             </select>
           </label>
-          <label className="flex items-center gap-2 cursor-pointer text-[var(--color-text)]">
+          <label className="col-span-2 sm:col-span-1 flex items-center gap-2 cursor-pointer text-[var(--color-text)] min-h-[44px] sm:min-h-0">
             <input
               type="checkbox"
               checked={recommendOnly}
               onChange={(e) => setRecommendOnly(e.target.checked)}
-              className="rounded border-[var(--color-primary-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)]/30"
+              className="rounded border-[var(--color-primary-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)]/30 w-4 h-4 shrink-0"
             />
             <span>합주 가능만 보기</span>
           </label>
         </div>
-      </div>
 
-      <div className="overflow-x-auto rounded-2xl border border-[#E0DDD9] bg-[#FAFAFA] shadow-sm overflow-hidden">
-        <table className="w-full border-collapse text-sm table-fixed [border-color:#E0DDD9]" style={{ minWidth: 600 }}>
+      <div className="overflow-x-auto rounded-xl sm:rounded-2xl border border-[#E0DDD9] bg-[#FAFAFA] shadow-sm overflow-hidden -mx-1 sm:mx-0">
+        <table className="w-full border-collapse text-xs sm:text-sm table-fixed [border-color:#E0DDD9]" style={{ minWidth: 320 }}>
           <colgroup>
-            <col style={{ width: '4rem' }} />
+            <col style={{ width: '3.25rem' }} />
             {dayKeys.map((dk) => (
-              <col key={dk} style={{ width: `calc((100% - 4rem) / ${dayKeys.length})` }} />
+              <col key={dk} style={{ width: dayKeys.length ? `calc((100% - 3.25rem) / ${dayKeys.length})` : undefined }} />
             ))}
           </colgroup>
           <thead>
             <tr>
-              <th className="border-b border-[#E0DDD9] bg-white/80 px-3 py-3 text-left font-semibold text-[var(--color-text)] w-16">
+              <th className="sticky left-0 z-10 border-b border-r border-[#E0DDD9] bg-white/90 px-2 sm:px-3 py-2 sm:py-3 text-left font-semibold text-[var(--color-text)] text-xs sm:text-sm backdrop-blur-sm">
                 시간
               </th>
               {dayKeys.map((dk) => (
                 <th
                   key={dk}
-                  className="border-b border-l border-[#E0DDD9] bg-white/80 px-3 py-3 text-center font-semibold text-[var(--color-text)]"
+                  className="border-b border-l border-[#E0DDD9] bg-white/80 px-1.5 sm:px-3 py-2 sm:py-3 text-center font-semibold text-[var(--color-text)] text-[10px] sm:text-sm"
                 >
-                  {formatDateLabel(dk)}
+                  <span className="hidden sm:inline">{formatDateLabel(dk)}</span>
+                  <span className="sm:hidden">{formatDateLabelShort(dk)}</span>
                 </th>
               ))}
             </tr>
@@ -210,14 +217,14 @@ export default function Grid({ data, settings, onSettingsChange }) {
           <tbody>
             {gridCells.map((row) => (
               <tr key={row.time}>
-                <td className="border-b border-[#E0DDD9] bg-white/50 px-3 py-2.5 text-[var(--color-text-muted)] whitespace-nowrap font-medium">
+                <td className="sticky left-0 z-10 border-b border-r border-[#E0DDD9] bg-white/70 px-2 sm:px-3 py-2 sm:py-2.5 text-[var(--color-text-muted)] whitespace-nowrap font-medium text-xs sm:text-sm backdrop-blur-sm">
                   {row.time}
                 </td>
                 {row.cells.map((cell) => (
                   <td
                     key={cell.slotKey}
                     onClick={() => setSelectedSlot(cell.slotKey)}
-                    className={`border-b border-l px-3 py-2.5 cursor-pointer min-h-[56px] align-top transition-colors ${
+                    className={`border-b border-l px-1.5 sm:px-3 py-2 sm:py-2.5 cursor-pointer min-h-[48px] sm:min-h-[56px] align-top transition-colors touch-manipulation ${
                       recommendOnly && !cell.meaningful
                         ? 'border-[#E0DDD9] bg-white/40 opacity-50'
                         : cell.meaningful
@@ -227,8 +234,8 @@ export default function Grid({ data, settings, onSettingsChange }) {
                         : 'border-[#E0DDD9] bg-white/50 hover:bg-white/80'
                     }`}
                   >
-                    <div className="font-semibold text-[var(--color-text)]">{cell.count}명</div>
-                    <div className="text-xs text-[var(--color-text-muted)] truncate" title={cell.names.join(', ')}>
+                    <div className="font-semibold text-[var(--color-text)] text-xs sm:text-sm">{cell.count}명</div>
+                    <div className="text-[10px] sm:text-xs text-[var(--color-text-muted)] truncate" title={cell.names.join(', ')}>
                       {cell.names.join(', ')}
                     </div>
                   </td>
