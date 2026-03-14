@@ -36,13 +36,13 @@ function getWeeks(slotKeys) {
   return Array.from(byWeek.entries()).sort((a, b) => a[0].localeCompare(b[0]))
 }
 
-function getTimeSlots(slotKeys) {
-  const set = new Set()
-  for (const k of slotKeys) {
-    set.add(slotToTimeKey(k))
-  }
-  return Array.from(set).sort()
-}
+// 09:00 ~ 23:45 고정, 15분 단위 (00:00 전까지만 표시)
+const FIXED_TIME_SLOTS = Array.from({ length: 60 }, (_, i) => {
+  const totalMins = 9 * 60 + i * 15
+  const h = Math.floor(totalMins / 60)
+  const m = totalMins % 60
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`
+})
 
 export default function Grid({ data, settings, onSettingsChange, roomSchedule = [] }) {
   const { slotKeys, people } = data
@@ -56,7 +56,7 @@ export default function Grid({ data, settings, onSettingsChange, roomSchedule = 
   const weekKey = currentWeek?.[0]
   const weekSlotKeys = currentWeek?.[1] || []
 
-  const timeSlots = useMemo(() => getTimeSlots(weekSlotKeys), [weekSlotKeys])
+  const timeSlots = FIXED_TIME_SLOTS
 
   const slotToPeople = useMemo(() => {
     const map = new Map()
@@ -83,7 +83,7 @@ export default function Grid({ data, settings, onSettingsChange, roomSchedule = 
       const row = []
       for (const dateKey of dayKeys) {
         const slotKey = `${dateKey}T${time}`
-        const names = slotToPeople.get(slotKey) || []
+        const names = [...(slotToPeople.get(slotKey) || [])]
         const count = names.length
         const hasRequired = !requiredMember || names.includes(requiredMember)
         const meaningful = count >= minPeople && hasRequired
