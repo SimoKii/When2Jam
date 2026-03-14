@@ -192,22 +192,22 @@ export default function Grid({ data, settings, onSettingsChange, roomSchedule = 
         </div>
 
       <div className="overflow-x-auto rounded-xl sm:rounded-2xl border border-[#E0DDD9] bg-[#FAFAFA] shadow-sm overflow-hidden -mx-1 sm:mx-0">
-        <table className="w-full border-collapse text-xs sm:text-sm table-fixed [border-color:#E0DDD9]" style={{ minWidth: 320 }}>
+        <table className="w-full border-collapse text-xs sm:text-sm table-fixed [border-color:#E0DDD9]" style={{ minWidth: 420 }}>
           <colgroup>
-            <col style={{ width: '3.25rem' }} />
+            <col style={{ width: '4.5rem' }} />
             {dayKeys.map((dk) => (
-              <col key={dk} style={{ width: dayKeys.length ? `calc((100% - 3.25rem) / ${dayKeys.length})` : undefined }} />
+              <col key={dk} style={{ width: dayKeys.length ? `calc((100% - 4.5rem) / ${dayKeys.length})` : undefined }} />
             ))}
           </colgroup>
           <thead>
             <tr>
-              <th className="sticky left-0 z-10 border-b border-r border-[#E0DDD9] bg-white/90 px-2 sm:px-3 py-2 sm:py-3 text-left font-semibold text-[var(--color-text)] text-xs sm:text-sm backdrop-blur-sm">
+              <th className="sticky left-0 z-10 border-b border-r border-[#E0DDD9] bg-white/90 px-3 sm:px-4 py-2 sm:py-3 text-center align-middle font-semibold text-[var(--color-text)] text-xs sm:text-sm backdrop-blur-sm">
                 시간
               </th>
               {dayKeys.map((dk) => (
                 <th
                   key={dk}
-                  className="border-b border-l border-[#E0DDD9] bg-white/80 px-1.5 sm:px-3 py-2 sm:py-3 text-center font-semibold text-[var(--color-text)] text-[10px] sm:text-sm"
+                  className="border-b border-l border-[#E0DDD9] bg-white/80 px-2.5 sm:px-4 py-2 sm:py-3 text-center font-semibold text-[var(--color-text)] text-[10px] sm:text-sm"
                 >
                   <span className="hidden sm:inline">{formatDateLabel(dk)}</span>
                   <span className="sm:hidden">{formatDateLabelShort(dk)}</span>
@@ -218,14 +218,14 @@ export default function Grid({ data, settings, onSettingsChange, roomSchedule = 
           <tbody>
             {gridCells.map((row) => (
               <tr key={row.time}>
-                <td className="sticky left-0 z-10 border-b border-r border-[#E0DDD9] bg-white/70 px-2 sm:px-3 py-2 sm:py-2.5 text-[var(--color-text-muted)] whitespace-nowrap font-medium text-xs sm:text-sm backdrop-blur-sm">
+                <td className="sticky left-0 z-10 border-b border-r border-[#E0DDD9] bg-white/70 px-3 sm:px-4 py-2.5 sm:py-3 text-[var(--color-text-muted)] whitespace-nowrap font-medium text-xs sm:text-sm backdrop-blur-sm min-h-[3rem] sm:min-h-[3.25rem]">
                   {row.time}
                 </td>
                 {row.cells.map((cell) => (
                   <td
                     key={cell.slotKey}
                     onClick={() => setSelectedSlot(cell.slotKey)}
-                    className={`border-b border-l px-1.5 sm:px-3 py-2 sm:py-2.5 cursor-pointer min-h-[48px] sm:min-h-[56px] align-top transition-colors touch-manipulation ${
+                    className={`border-b border-l px-2.5 sm:px-4 py-2.5 sm:py-3 cursor-pointer min-h-[3rem] sm:min-h-[3.25rem] align-top transition-colors touch-manipulation ${
                       recommendOnly && !cell.meaningful
                         ? 'border-[#E0DDD9] bg-white/40 opacity-50'
                         : cell.meaningful
