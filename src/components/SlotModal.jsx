@@ -47,14 +47,14 @@ export default function SlotModal({ slotKey, names = [], onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/40 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby="slot-modal-title"
     >
       <div
-        className="w-full max-w-sm rounded-t-2xl sm:rounded-2xl bg-[#FAFAFA] shadow-xl border border-[#E0DDD9] overflow-hidden max-h-[85vh] overflow-y-auto pb-[env(safe-area-inset-bottom)]"
+        className="w-full max-w-sm rounded-2xl bg-[#FAFAFA] shadow-xl border border-[#E0DDD9] overflow-hidden max-h-[85vh] overflow-y-auto pb-[env(safe-area-inset-bottom)]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="px-4 sm:px-5 pt-4 sm:pt-5 pb-1 flex items-center justify-between sticky top-0 bg-[#FAFAFA]">
