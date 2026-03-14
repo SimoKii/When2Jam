@@ -56,7 +56,7 @@ export default function SlotModal({ slotKey, names = [], onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm min-h-screen min-h-[100dvh] overflow-y-auto"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
