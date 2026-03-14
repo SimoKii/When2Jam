@@ -230,8 +230,8 @@ export default function Grid({ data, settings, onSettingsChange }) {
                         : cell.meaningful
                         ? 'border-[#681993]/25 bg-[var(--color-primary-light)] hover:bg-[var(--color-primary)]/20'
                         : cell.count > 0
-                        ? 'border-[#E0DDD9] bg-white/70 hover:bg-[var(--color-primary-light)]'
-                        : 'border-[#E0DDD9] bg-white/50 hover:bg-white/80'
+                        ? 'border-[#E0DDD9] bg-white/70 hover:bg-[#E0DDD9]/60'
+                        : 'border-[#E0DDD9] bg-white/50 hover:bg-[#E0DDD9]/50'
                     }`}
                   >
                     <div className="font-semibold text-[var(--color-text)] text-xs sm:text-sm">{cell.count}명</div>
